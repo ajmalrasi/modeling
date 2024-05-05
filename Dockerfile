@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:1.15.5-gpu-py3-jupyter
+FROM nvcr.io/nvidia/tensorflow:23.03-tf1-py3
 
 ARG USER=ajmalrasi
 ARG UID=1000
@@ -6,13 +6,17 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 USER root
 
-RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
 
 RUN apt-get update && \
 useradd -m -U -u $UID $USER && \
-apt-get install -y gcc python3-setuptools git-all protobuf-compiler wget && \
+apt-get install -y gcc python3-setuptools git protobuf-compiler wget && \
 rm -rf /var/lib/apt/lists/*
 
+WORKDIR /home/$USER
+
+RUN python3 -m pip install --upgrade pip
+
+# Edge TPU Compiler
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 RUN echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | tee /etc/apt/sources.list.d/coral-edgetpu.list
 
@@ -20,14 +24,14 @@ RUN apt-get update && \
 apt-get install -y edgetpu-compiler && \
 rm -rf /var/lib/apt/lists/*
 
-USER $UID:$UID
-WORKDIR /home/$USER
 COPY --chown=$UID requirements.txt ./
 
 RUN pip3 install --upgrade setuptools Cython numpy
 
+# Dependencies
 RUN pip3 install --no-cache-dir --user -r requirements.txt
 
+# Tensorflow Models
 RUN git clone https://github.com/tensorflow/models.git
 
 ENV PYTHONPATH="${PYTHONPATH}:/home/$USER/models/research/"

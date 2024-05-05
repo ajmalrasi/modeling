@@ -1,3 +1,5 @@
 keras==2.2.5
 pycocotools
 tf_slim
+jupyterlab
+keras_preprocessing==1.1.2
