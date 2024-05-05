@@ -41,5 +41,7 @@ RUN cp object_detection/packages/tf1/setup.py .
 RUN python -m pip install .
 
 WORKDIR /home/$USER
+RUN rm requirements.txt
+COPY --chown=$UID jupyter.sh ./
 
 CMD ["/bin/bash"]
