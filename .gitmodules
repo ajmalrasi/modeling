@@ -1,0 +1,3 @@
+[submodule "trainer/models"]
+	path = trainer/models
+	url = https://github.com/ajmalrasi/models
