@@ -32,7 +32,7 @@ RUN pip3 install --upgrade setuptools Cython numpy
 RUN pip3 install --no-cache-dir --user -r requirements.txt
 
 # Tensorflow Models
-# RUN git clone https://github.com/tensorflow/models.git
+RUN git clone https://github.com/ajmalrasi/models.git
 COPY --chown=$UID models models
 COPY --chown=$UID notebooks notebooks
 
