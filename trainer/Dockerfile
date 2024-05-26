@@ -33,7 +33,6 @@ RUN pip3 install --no-cache-dir --user -r requirements.txt
 
 # Tensorflow Models
 RUN git clone https://github.com/ajmalrasi/models.git
-COPY --chown=$UID models models
 COPY --chown=$UID notebooks notebooks
 
 ENV PYTHONPATH="${PYTHONPATH}:/home/$USER/models/research/"
